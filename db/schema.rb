@@ -25,6 +25,8 @@ ActiveRecord::Schema.define(version: 20160612164400) do
     t.boolean  "flagged"
     t.string   "task_id"
     t.string   "type_of_object"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
 end

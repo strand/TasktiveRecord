@@ -22,7 +22,15 @@ describe OmnifocusImporter do
       importer = described_class.new(file)
       expect(Task.count).to be 0
       importer.import_to_active_record
-      expect(Task.count).to be > 30
+      expect(Task.count).to be > 29
+    end
+
+    it "does not create duplicate tasks" do
+      importer = described_class.new(file)
+      importer.import_to_active_record
+      expect(Task.count).to be > 29
+      importer.import_to_active_record
+      expect(Task.count).to be < 31
     end
 
     it "only imports 'Action' tasks"

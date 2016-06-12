@@ -16,20 +16,19 @@ class OmnifocusImporter
     end
 
     body = IO.read @file
-    csv = CSV.new(body,
-                  headers: true,
-                  header_converters: :symbol,
-                  converters: [:all, :blank_to_nil]
+    csv = CSV.new(
+      body,
+      headers: true,
+      header_converters: :symbol,
+      converters: [:all, :blank_to_nil]
     )
-    args = csv.to_a.map { |row| row.to_hash }
-    p args.first.keys
-    args.map! do |hash|
-      type_of_object = hash[:type]
-      hash.select! { |key, _v| Task::ATTRIBUTES.include? key }
-      hash.merge({ type_of_object: type_of_object })
-    end
-    args.each do |arg|
-      Task.create arg
-    end
+
+    args = csv.to_a.map { |row| row.to_hash }.
+      select { |row| row[:type] == "Action" }.
+      map    { |row| row[:flagged] = row[:flagged] == 1 ? true : false; row }.
+      map    { |row| row[:type_of_object] = row[:type]                ; row }.
+      map    { |row| row.select { |key, _v| Task::ATTRIBUTES.include? key } }
+
+    args.each { |arg| Task.find_or_create_by arg }
   end
 end

@@ -4,7 +4,7 @@ class CreateTask < ActiveRecord::Migration
       t.string   :name
       t.text     :notes
 
-      t.string   :context # context is used for polymorphic associations
+      t.string   :context
       t.string   :project
 
       t.datetime :completion_date
@@ -15,6 +15,8 @@ class CreateTask < ActiveRecord::Migration
       t.boolean  :flagged
       t.string   :task_id
       t.string   :type_of_object
+
+      t.timestamps
     end
   end
 end
