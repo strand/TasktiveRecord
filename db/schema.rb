@@ -14,7 +14,17 @@
 ActiveRecord::Schema.define(version: 20160612164400) do
 
   create_table "tasks", force: :cascade do |t|
-    t.string "name"
+    t.string   "name"
+    t.text     "notes"
+    t.string   "context"
+    t.string   "project"
+    t.datetime "completion_date"
+    t.datetime "due_date"
+    t.datetime "start_date"
+    t.string   "duration"
+    t.boolean  "flagged"
+    t.string   "task_id"
+    t.string   "type_of_object"
   end
 
 end

@@ -22,7 +22,12 @@ class OmnifocusImporter
                   converters: [:all, :blank_to_nil]
     )
     args = csv.to_a.map { |row| row.to_hash }
-    args.map! { |hash| hash.select { |key, _v| Task::Attributes.include? key } }
+    p args.first.keys
+    args.map! do |hash|
+      type_of_object = hash[:type]
+      hash.select! { |key, _v| Task::ATTRIBUTES.include? key }
+      hash.merge({ type_of_object: type_of_object })
+    end
     args.each do |arg|
       Task.create arg
     end
